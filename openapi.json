@@ -1,0 +1,161 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Customer Details API",
+    "description" : "An API that stores and returns customer details",
+    "termsOfService" : "https://pk.com/terms-of-use",
+    "contact" : {
+      "name" : "Pavan Krishna",
+      "url" : "pk.com",
+      "email" : "pavankrishna1729@gmail.com"
+    },
+    "license" : {
+      "name" : "Swagger license",
+      "url" : "https://swagger.io"
+    },
+    "version" : "2.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://devserver.com",
+    "description" : "Dev Server"
+  }, {
+    "url" : "https://prodserver.com",
+    "description" : "production server"
+  } ],
+  "paths" : {
+    "/employees" : {
+      "get" : {
+        "description" : "Obtain info about employess from database.",
+        "parameters" : [ {
+          "name" : "bodylimit",
+          "in" : "query",
+          "description" : "The number of employees to be returned",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 20,
+            "minimum" : 10,
+            "type" : "integer",
+            "example" : 15
+          }
+        }, {
+          "name" : "pagelimit",
+          "in" : "query",
+          "description" : "The pages to be returned  with employees info",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer",
+            "example" : 2
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "success in getting employee info",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Employees"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Employee"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "creates a new employee in database",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Employee"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Employee"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successfully created a new employee in DB"
+          }
+        }
+      }
+    },
+    "/employee{id}" : {
+      "get" : {
+        "description" : "Obtain information of specific employee",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Id of the employee",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 123005
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Employee"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Employee"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Employee" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "example" : 3
+          },
+          "employee name" : {
+            "type" : "string",
+            "example" : "Pavan Kumar"
+          },
+          "employee title" : {
+            "type" : "string",
+            "example" : "Manager"
+          }
+        },
+        "description" : "Model containing employee info"
+      },
+      "Employees" : {
+        "type" : "array",
+        "description" : "Array of employee info",
+        "items" : {
+          "$ref" : "#/components/schemas/Employee"
+        }
+      }
+    }
+  }
+}
